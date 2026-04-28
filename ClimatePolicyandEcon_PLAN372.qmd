@@ -1,0 +1,162 @@
+---
+title: "Skorstad PLAN 372 Final Project"
+author: "Christina Skorstad"
+format: html
+---
+
+# Economic Outcomes of City Climate Policies
+
+```{r}
+# Load libraries & datasets
+library(tidyverse)
+library(tidycensus)
+
+# ACEEE policy score csv
+policy_data <- read.csv("C:/Users/clara/OneDrive/Desktop/PLAN 372/Final Project/aceee_city_scorecard_2024_verified.csv")
+
+# View the table
+policy_data
+```
+
+
+```{r}
+# ACS data
+acs_data <- get_acs(
+  geography = "place",
+  variables = c(
+    median_income = "B19013_001",
+    poverty_total = "B17001_001",
+    poverty_count = "B17001_002",
+    labor_force = "B23025_003",
+    unemployed = "B23025_005",
+    population = "B01003_001"
+  ),
+  year = 2022,
+  survey = "acs5",
+  output = "wide"
+)
+```
+
+```{r}
+# Clean ACS place names
+acs_clean <- acs_data %>%
+  separate(NAME, into = c("city_raw", "state_name"), sep = ", ") %>%
+  mutate(
+    city = city_raw %>%
+      str_remove(" city") %>%
+      str_remove(" city \\(balance\\)") %>%
+      str_remove(" town") %>%
+      str_remove(" CDP") %>%
+      str_remove(" municipality") %>%
+      str_remove(" urban county") %>%
+      str_remove(" metropolitan government \\(balance\\)") %>%
+      str_remove(" consolidated government \\(balance\\)"),
+    state = state.abb[match(state_name, state.name)]
+  )
+```
+
+```{r}
+# Fix name issues from csv
+acs_clean <- acs_clean %>%
+  mutate(
+    city = case_when(
+      city == "St. Paul" ~ "Saint Paul",
+      city == "San Jose" ~ "San José",
+      str_detect(city_raw, "Washington") & state_name == "District of Columbia" ~ "Washington",
+      str_detect(city_raw, "Urban Honolulu") ~ "Honolulu",
+      str_detect(city_raw, "Nashville-Davidson") ~ "Nashville",
+      str_detect(city_raw, "Louisville/Jefferson County") ~ "Louisville",
+      TRUE ~ city
+    ),
+    state = ifelse(state_name == "District of Columbia", "DC", state)
+  )
+```
+
+```{r}
+# 3 economic outcome variables
+acs_economic <- acs_clean %>%
+  transmute(
+    city,
+    state,
+    median_income = median_incomeE,
+    poverty_rate = (poverty_countE / poverty_totalE) * 100,
+    unemployment_rate = (unemployedE / labor_forceE) * 100,
+    population = populationE
+  )
+```
+
+```{r}
+# Merge ACEEE data with ACS data
+final_data <- policy_data %>%
+  left_join(acs_economic, by = c("city", "state"))
+```
+
+```{r}
+# Check how many cities matched
+sum(!is.na(final_data$median_income))
+nrow(final_data)
+```
+
+```{r}
+# unmatched cities
+final_data %>%
+  filter(is.na(median_income)) %>%
+  select(city, state)
+```
+
+```{r}
+# final merged dataset
+write.csv(final_data, "final_city_climate_economic_data.csv", row.names = FALSE)
+
+# stats
+summary(final_data)
+```
+
+```{r}
+# policy score and median income scatterplot
+ggplot(final_data, aes(x = policy_score, y = median_income)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Climate Policy Score and Median Household Income",
+    x = "ACEEE Climate Policy Score",
+    y = "Median Household Income"
+  )
+```
+
+```{r}
+# Policy score and unemployment rate scatterplot
+ggplot(final_data, aes(x = policy_score, y = unemployment_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Climate Policy Score and Unemployment Rate",
+    x = "ACEEE Climate Policy Score",
+    y = "Unemployment Rate (%)"
+  )
+```
+
+```{r}
+# Policy score and poverty rate scatterplot
+ggplot(final_data, aes(x = policy_score, y = poverty_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Climate Policy Score and Poverty Rate",
+    x = "ACEEE Climate Policy Score",
+    y = "Poverty Rate (%)"
+  )
+```
+
+```{r}
+# Regression models
+income_model <- lm(median_income ~ policy_score, data = final_data)
+unemployment_model <- lm(unemployment_rate ~ policy_score, data = final_data)
+poverty_model <- lm(poverty_rate ~ policy_score, data = final_data)
+
+# View
+summary(income_model)
+summary(unemployment_model)
+summary(poverty_model)
+```
+

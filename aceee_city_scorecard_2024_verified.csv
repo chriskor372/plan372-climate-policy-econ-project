@@ -1,0 +1,76 @@
+rank,city,state,policy_score
+1,San Francisco,CA,158.5
+2,Denver,CO,155.0
+3,Seattle,WA,154.0
+4,Los Angeles,CA,145.0
+5,Oakland,CA,143.0
+6,Minneapolis,MN,142.0
+7,New York,NY,139.5
+8,Portland,OR,138.5
+9,San José,CA,137.5
+10,Washington,DC,130.0
+11,Boston,MA,120.0
+12,Chicago,IL,114.5
+13,San Diego,CA,107.0
+13,Sacramento,CA,107.0
+13,Atlanta,GA,107.0
+16,Chula Vista,CA,100.0
+17,Orlando,FL,96.0
+17,Austin,TX,96.0
+19,Philadelphia,PA,95.0
+20,Saint Paul,MN,94.5
+21,Madison,WI,90.5
+22,Riverside,CA,82.5
+22,Baltimore,MD,82.5
+22,Pittsburgh,PA,82.5
+25,Charlotte,NC,81.5
+26,Kansas City,MO,81.0
+27,Miami,FL,78.5
+28,Long Beach,CA,78.0
+29,Honolulu,HI,76.5
+30,St. Louis,MO,75.5
+31,San Antonio,TX,73.5
+32,Columbus,OH,72.0
+33,Nashville,TN,70.5
+34,Fresno,CA,70.0
+34,Houston,TX,70.0
+36,Hartford,CT,69.5
+36,Providence,RI,69.5
+38,Las Vegas,NV,68.5
+39,New Orleans,LA,68.0
+40,Grand Rapids,MI,66.0
+41,Phoenix,AZ,65.5
+41,Salt Lake City,UT,65.5
+43,Albuquerque,NM,65.0
+44,Oxnard,CA,62.5
+45,Milwaukee,WI,62.0
+46,Cleveland,OH,61.0
+47,Knoxville,TN,60.0
+48,Aurora,CO,58.5
+49,Cincinnati,OH,55.5
+50,New Haven,CT,54.5
+51,Dallas,TX,53.5
+52,Boise,ID,53.0
+53,Spokane,WA,51.5
+54,Detroit,MI,50.0
+55,Memphis,TN,49.5
+56,Springfield,MA,49.0
+56,Raleigh,NC,49.0
+56,Des Moines,IA,49.0
+59,Rochester,NY,48.0
+60,Indianapolis,IN,42.0
+61,Richmond,VA,40.0
+62,Tucson,AZ,38.5
+62,St. Petersburg,FL,38.5
+64,Reno,NV,37.0
+65,Lansing,MI,36.5
+65,Louisville,KY,36.5
+67,Durham,NC,32.5
+68,Bridgeport,CT,28.5
+69,Mesa,AZ,26.0
+70,Charleston,SC,25.5
+70,Fayetteville,AR,25.5
+72,Toledo,OH,23.0
+73,Chattanooga,TN,22.5
+74,Tampa,FL,21.0
+75,Akron,OH,19.5
