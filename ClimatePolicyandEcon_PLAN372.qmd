@@ -156,7 +156,13 @@ poverty_model <- lm(poverty_rate ~ policy_score, data = final_data)
 
 # View
 summary(income_model)
+```
+
+```{r}
 summary(unemployment_model)
+```
+
+```{r}
 summary(poverty_model)
 ```
 
